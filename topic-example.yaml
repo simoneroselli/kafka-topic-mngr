@@ -1,0 +1,6 @@
+replication: '1'
+partitions: '1'
+segment.bytes: '2'
+index.interval.bytes: '496'
+retention.ms: '2000000'
+segment.index.bytes: '10'
