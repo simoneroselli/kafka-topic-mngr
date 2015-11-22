@@ -15,7 +15,7 @@ kafka_bin_path = '/Users/zmo/Src/kafka/bin'
 kafka_conf_path = '/etc/kafka/topics'
 kafka_doc = 'http://kafka.apache.org/documentation.html#brokerconfigs'
 
-# Load the YAML topic values as dictionary (topic_yaml)
+# Load the YAML topic values as dictionary
 try:
     with open(topic_name + '.yaml', 'r') as stream:
         topic_yaml_cnf = yaml.load(stream)
