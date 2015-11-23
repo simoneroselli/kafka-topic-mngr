@@ -4,12 +4,13 @@
 #
 
 import yaml, ast, sys
-import subprocess, glob
+import subprocess, os
 
+from glob import *
 from ConfigParser import *
 from kazoo.client import KazooClient
 
-topic_name = 'test-topic4'
+#topic_name = 'test-topic4'
 
 # Configuration
 config = ConfigParser()
@@ -132,16 +133,20 @@ class KafkaTopicMngr(object):
 
 # Interface
 if __name__ == "__main__":
-    topics = glob.glob(kafka_conf_path + '/*.yaml')
+    topics = glob(kafka_conf_path + '/*.yaml')
     for topic in topics:
+        topic_name = os.path.basename(topic).strip('.yaml')
+        
         # Load the YAML topic values as dictionary
         try:
-    	    with open(kafka_conf_path + '/' + topic_name + '.yaml', 'r') as stream:
+    	    with open(topic, 'r') as stream:
     	        topic_yaml_cnf = yaml.load(stream)
+                print topic_yaml_cnf
         except IOError:
     	    print("ERROR: Missing \"%s" + '.yaml\"' + " file in %s") % (topic_name, kafka_conf_path)
     	sys.exit(2)
-
+        
+        # KafkaTopicMngr
         mngr = KafkaTopicMngr(topic_yaml_cnf, topic_name, zk_conn)
         if mngr.exists() == False:
             mngr.create()
