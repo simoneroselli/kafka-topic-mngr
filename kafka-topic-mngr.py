@@ -32,10 +32,8 @@ def conf_map(section):
             conf[o] = None
     return conf
 
-# Zookeeper
+# Import configuration
 zk_conn         = conf_map("zookeeper")['zk_conn']
-
-# Kafka
 kafka_bin_path  = conf_map('kafka')['kafka_bin_path']
 kafka_conf_path = conf_map('kafka')['kafka_conf_path']
 kafka_doc       = conf_map('kafka')['kafka_doc'] 
@@ -143,8 +141,8 @@ if __name__ == "__main__":
     	        topic_yaml_cnf = yaml.load(stream)
         except IOError:
     	    print("ERROR: Missing \"%s" + '.yaml\"' + " file in %s") % (topic_name, kafka_conf_path)
-    	sys.exit(2)
-        
+    	    sys.exit(2)
+       
         # KafkaTopicMngr
         mngr = KafkaTopicMngr(topic_yaml_cnf, topic_name, zk_conn)
         if mngr.exists() == False:
