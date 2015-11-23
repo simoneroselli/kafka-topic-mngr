@@ -3,7 +3,7 @@
 # Author Simone Roselli <simone.roselli@plista.com>
 #
 
-import yaml, ast, sys
+import yaml, sys
 import subprocess, os
 
 from glob import *
