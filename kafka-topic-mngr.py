@@ -4,24 +4,40 @@
 #
 
 import yaml, ast, sys
-import subprocess
+import subprocess, glob
 
+from ConfigParser import *
 from kazoo.client import KazooClient
 
 topic_name = 'test-topic4'
-zk_conn = '192.168.99.100:32771'
 
-kafka_bin_path = '/Users/zmo/Src/kafka/bin'
-kafka_conf_path = '/etc/kafka/topics'
-kafka_doc = 'http://kafka.apache.org/documentation.html#brokerconfigs'
+# Configuration
+config = ConfigParser()
+config.read('topics.conf')
 
-# Load the YAML topic values as dictionary
-try:
-    with open(topic_name + '.yaml', 'r') as stream:
-        topic_yaml_cnf = yaml.load(stream)
-except IOError:
-    print("ERROR: Missing \"%s" + '.yaml\"' + " file in %s") % (topic_name, kafka_conf_path)
-    sys.exit(2)
+def conf_map(section):
+    """
+    Import the configuration from '/etc/kafka/topics.conf'
+    """
+    conf = {}
+    options = config.options(section)
+    for o in options:
+        try:
+            conf[o] = config.get(section, o)
+            if conf[o] == -1:
+                DebugPrint("skip: %s" % o)
+        except:
+            print("exception on %s!" % o)
+            conf[o] = None
+    return conf
+
+# Zookeeper
+zk_conn         = conf_map("zookeeper")['zk_conn']
+
+# Kafka
+kafka_bin_path  = conf_map('kafka')['kafka_bin_path']
+kafka_conf_path = conf_map('kafka')['kafka_conf_path']
+kafka_doc       = conf_map('kafka')['kafka_doc'] 
 
 class KafkaTopicMngr(object):     
     def __init__(self, yaml_cnf, topic, zk_conn):
@@ -116,9 +132,18 @@ class KafkaTopicMngr(object):
 
 # Interface
 if __name__ == "__main__":
-    mngr = KafkaTopicMngr(topic_yaml_cnf, topic_name, zk_conn)
-    if mngr.exists() == False:
-        mngr.create()
-        mngr.setup()
-    else:
+    topics = glob.glob(kafka_conf_path + '/*.yaml')
+    for topic in topics:
+        # Load the YAML topic values as dictionary
+        try:
+    	    with open(kafka_conf_path + '/' + topic_name + '.yaml', 'r') as stream:
+    	        topic_yaml_cnf = yaml.load(stream)
+        except IOError:
+    	    print("ERROR: Missing \"%s" + '.yaml\"' + " file in %s") % (topic_name, kafka_conf_path)
+    	sys.exit(2)
+
+        mngr = KafkaTopicMngr(topic_yaml_cnf, topic_name, zk_conn)
+        if mngr.exists() == False:
+            mngr.create()
+         
         mngr.setup()
