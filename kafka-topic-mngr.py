@@ -141,7 +141,6 @@ if __name__ == "__main__":
         try:
     	    with open(topic, 'r') as stream:
     	        topic_yaml_cnf = yaml.load(stream)
-                print topic_yaml_cnf
         except IOError:
     	    print("ERROR: Missing \"%s" + '.yaml\"' + " file in %s") % (topic_name, kafka_conf_path)
     	sys.exit(2)
