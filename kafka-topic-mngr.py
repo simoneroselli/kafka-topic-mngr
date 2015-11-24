@@ -1,5 +1,12 @@
 #!/usr/bin/env python
 #
+# Kafka-topic-mngr is a tool designed to maintain Kakfa topic's configuration,
+# in property files (YAML). It is reading its configuration from a file (eg
+# '/etc/kafka/topics.conf'), to know about Zookeeper address and other
+# settings; then it looks in a directory where the topic property files are
+# stored. For each of those it will apply the relative configuration, using
+# 'kafka-topics.sh' provided by Apache Kafka itself
+#
 # Author Simone Roselli <simone.roselli@plista.com>
 #
 
