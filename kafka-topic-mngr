@@ -113,6 +113,7 @@ class KafkaTopicMngr(object):
         better handle this, probably creating a deditated YAML files for the
         options.
         """
+        print("Configuring topic \"%s\" ..") % (self.topic)
         for conf, value in self.yaml_cnf.items():
             if conf == 'replication' or conf == 'partitions':
                 continue
