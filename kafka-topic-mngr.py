@@ -10,8 +10,6 @@ from glob import *
 from ConfigParser import *
 from kazoo.client import KazooClient
 
-#topic_name = 'test-topic4'
-
 # Configuration
 config = ConfigParser()
 config.read('topics.conf')
