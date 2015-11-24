@@ -4,7 +4,7 @@
 ### Output example:
 ```
 ./kafka-topic-mngr
-Creating new topic "example-topic1 --replication 1 --partitions 1" ..
+Creating new topic "example-topic1 --replication 2 --partitions 3" ..
 Created topic "example-topic1"!
 Topic 'example-topic1' configured with {'index.interval.bytes': '496'}
 Topic 'example-topic1' configured with {'retention.ms': '2000000'}
